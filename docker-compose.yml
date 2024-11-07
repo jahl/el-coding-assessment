@@ -1,0 +1,34 @@
+networks:
+  backend:
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - ${APP_POSTGRES_PORT:-5432}:5432
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    networks: [ "backend" ]
+    environment:
+      POSTGRES_PASSWORD: 3x4mpl3
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    command: rails server -p 3000 -b 0.0.0.0
+    ports:
+      - ${APP_WEB_PORT:-3000}:3000
+    depends_on:
+      - postgres
+    networks: [ "backend" ]
+    volumes:
+      - .:/usr/src
+    stdin_open: true
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+    environment:
+      DATABASE_URL: postgres://postgres:3x4mpl3@postgres:5432/coding-assessment_development
+      RAILS_ENV: development
+      RACK_ENV: development
