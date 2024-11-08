@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   namespace :api do
-    post 'user', to: 'registrations#create'
-
     resource :session, only: [:create, :destroy], path: 'sessions'
+
+    resource :user, only: [:create] do
+      get '/', to: 'users#details', as: :details
+    end
 
     namespace :users, path: 'user' do
       resource :game_events, only: [:create]
