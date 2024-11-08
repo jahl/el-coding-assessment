@@ -12,7 +12,7 @@ services:
     environment:
       POSTGRES_PASSWORD: 3x4mpl3
 
-  server:
+  server: &app
     build:
       context: .
       dockerfile: Dockerfile
@@ -33,19 +33,8 @@ services:
       RACK_ENV: development
 
   test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
+    <<: *app
     command: rspec
-    env_file: .env
-    networks: [ "backend" ]
-    volumes:
-      - .:/usr/src
-    stdin_open: true
-    tty: true
-    depends_on:
-      - postgres
     environment:
       DATABASE_URL: postgres://postgres:3x4mpl3@postgres:5432/coding-assessment_test
       RAILS_ENV: test
