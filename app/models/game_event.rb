@@ -7,4 +7,6 @@ class GameEvent < ApplicationRecord
 
   belongs_to :game
   belongs_to :user
+
+  scope :completed, -> { where(event_type: :completed) }
 end
