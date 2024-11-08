@@ -7,7 +7,7 @@ module Api
             event_type: game_event_params[:event_type]&.downcase
           }))
 
-          render json: { game_event: game_event }
+          render json: { game_event: game_event }, status: :created
         rescue ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
           render json: { errors: e.message }, status: :unprocessable_entity
         end
