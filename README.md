@@ -7,7 +7,7 @@
 git clone https://github.com/jahl/el-coding-assessment.git
 ```
 
-2. Rename the file `.env.example` to `.env`
+2. Rename the file `.example.env` to `.env`
 
 ### Docker Setup (Recommended)
 
