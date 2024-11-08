@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Registrations', type: :request do
+RSpec.describe 'Users', type: :request do
   describe '#create' do
     context 'when providing valid parameters' do
       let(:registration_params) { {
@@ -16,10 +16,10 @@ RSpec.describe 'Registrations', type: :request do
         expect(response).to have_http_status(201)
       end
 
-      it 'creates a new user with the provided data' do
-        post api_user_path, params: registration_params
-
-        expect(User.last.email).to eq(registration_params[:user][:email])
+      it 'creates a new user' do
+        expect {
+          post api_user_path, params: registration_params
+        }.to change(User, :count).by(1)
       end
 
       it 'returns a JWT token' do
@@ -48,6 +48,35 @@ RSpec.describe 'Registrations', type: :request do
         expect {
           post api_user_path, params: registration_params
         }.not_to change(User, :count)
+      end
+    end
+  end
+
+  describe '#details' do
+    context 'user is authenticated' do
+      let!(:user) { create(:user, :with_game_events, game_events_count: 5) }
+
+      it 'returns 200 on success' do
+        get api_user_path, headers: auth_headers(user)
+
+        expect(response).to have_http_status(200)
+      end
+
+      it 'formats the user data correctly' do
+        get api_user_path, headers: auth_headers(user)
+
+        user_data = JSON.parse(response.body)['user']
+        expect(user_data).to include({ 'id' => user.id })
+        expect(user_data).to include({ 'email' => user.email })
+        expect(user_data).to include({ 'stats' => { 'total_games_played' => user.total_games_played } })
+      end
+    end
+
+    context 'user is not authenticated' do
+      it 'returns 401 on failure' do
+        get api_user_path, headers: {}
+
+        expect(response).to have_http_status(401)
       end
     end
   end

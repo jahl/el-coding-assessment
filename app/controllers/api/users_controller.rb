@@ -1,5 +1,5 @@
 module Api
-  class RegistrationsController < ApplicationController
+  class UsersController < ApplicationController
     include ::Auth::JwtTokenGenerator
     skip_before_action :authenticate_user_from_token!, only: [:create]
 
@@ -11,6 +11,18 @@ module Api
       else
         render json: { errors: user.errors }, status: :unprocessable_entity
       end
+    end
+
+    def details
+      render json: {
+        user: {
+          id: @current_user.id,
+          email: @current_user.email,
+          stats: {
+            total_games_played: @current_user.total_games_played
+          }
+        }
+      }
     end
 
     private
