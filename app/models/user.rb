@@ -8,4 +8,8 @@ class User < ApplicationRecord
   before_create :set_jti
 
   has_many :game_events
+
+  def total_games_played
+    game_events.completed.count
+  end
 end
