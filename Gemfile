@@ -39,6 +39,9 @@ gem "bootsnap", require: false
 gem 'devise'
 gem 'devise-jwt'
 
+# Enum support for AR models
+gem "enumerize", "~> 2.8"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]

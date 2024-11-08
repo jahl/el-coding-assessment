@@ -113,6 +113,8 @@ GEM
       concurrent-ruby (~> 1.0)
       logger
       zeitwerk (~> 2.6)
+    enumerize (2.8.1)
+      activesupport (>= 3.2)
     erubi (1.13.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
@@ -254,6 +256,7 @@ DEPENDENCIES
   debug
   devise
   devise-jwt
+  enumerize (~> 2.8)
   factory_bot_rails
   pg (~> 1.1)
   puma (>= 5.0)
