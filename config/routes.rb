@@ -3,6 +3,10 @@ Rails.application.routes.draw do
     post 'user', to: 'registrations#create'
 
     resource :session, only: [:create, :destroy], path: 'sessions'
+
+    namespace :users, path: 'user' do
+      resource :game_events, only: [:create]
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
